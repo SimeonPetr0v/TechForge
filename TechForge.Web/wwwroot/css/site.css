@@ -1,0 +1,92 @@
+:root {
+    --tf-bg: #07080d;
+    --tf-bg-2: #0e1018;
+    --tf-surface: #131623;
+    --tf-surface-2: #1a1e2e;
+    --tf-border: #232842;
+    --tf-text: #e7e9f3;
+    --tf-muted: #8a8fa8;
+    --tf-accent: #7c5cff;
+    --tf-accent-2: #20e3ff;
+    --tf-danger: #ff4d6d;
+    --tf-success: #2dd4bf;
+}
+
+html, body {
+    background: var(--tf-bg);
+    color: var(--tf-text);
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    min-height: 100vh;
+}
+
+body.tf-body {
+    background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(124,92,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 100% 0%, rgba(32,227,255,.10), transparent 60%),
+        var(--tf-bg);
+}
+
+a { color: var(--tf-accent-2); }
+a:hover { color: var(--tf-accent); }
+
+.tf-gradient-text {
+    background: linear-gradient(90deg, var(--tf-accent-2), var(--tf-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.tf-navbar {
+    background: rgba(7, 8, 13, 0.85);
+    backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--tf-border);
+}
+
+.tf-navbar .nav-link { color: var(--tf-text) !important; opacity: .8; }
+.tf-navbar .nav-link:hover { opacity: 1; }
+
+.tf-brand {
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--tf-text) !important;
+}
+.tf-brand .bi { color: var(--tf-accent-2); }
+
+.tf-main { min-height: calc(100vh - 140px); }
+
+.tf-hero {
+    border-bottom: 1px solid var(--tf-border);
+    background:
+        radial-gradient(800px 400px at 20% 20%, rgba(124,92,255,.20), transparent 60%),
+        radial-gradient(600px 300px at 80% 80%, rgba(32,227,255,.15), transparent 60%);
+}
+
+.tf-card {
+    background: linear-gradient(180deg, var(--tf-surface), var(--tf-surface-2));
+    border: 1px solid var(--tf-border);
+    border-radius: 14px;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.tf-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--tf-accent);
+    box-shadow: 0 10px 30px rgba(124,92,255,.18);
+}
+
+.tf-icon {
+    font-size: 2rem;
+    color: var(--tf-accent-2);
+}
+
+.btn-tf-primary {
+    background: linear-gradient(90deg, var(--tf-accent), var(--tf-accent-2));
+    color: #0b0c14;
+    font-weight: 600;
+    border: 0;
+}
+.btn-tf-primary:hover { filter: brightness(1.1); color: #0b0c14; }
+
+.tf-footer {
+    border-top: 1px solid var(--tf-border);
+    background: rgba(7,8,13,.5);
+}
