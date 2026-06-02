@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TechForge.Core.Entities;
 using TechForge.Data;
+using TechForge.Data.Seeding;
 
 namespace TechForge
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,17 @@ namespace TechForge
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var configuration = services.GetRequiredService<IConfiguration>();
+
+                await DbInitializer.SeedAsync(context, userManager, roleManager, configuration);
+            }
 
             if (!app.Environment.IsDevelopment())
             {
