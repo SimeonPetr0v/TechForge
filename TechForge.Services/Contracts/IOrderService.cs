@@ -1,7 +1,7 @@
 using TechForge.Core.Dtos;
 using TechForge.Core.Enums;
 
-namespace TechForge.Core.Interfaces;
+namespace TechForge.Services.Contracts;
 
 public interface IOrderService
 {

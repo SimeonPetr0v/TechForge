@@ -1,7 +1,7 @@
 using TechForge.Core.Dtos;
 using TechForge.Core.Querying;
 
-namespace TechForge.Core.Interfaces;
+namespace TechForge.Services.Contracts;
 
 public interface IProductService
 {

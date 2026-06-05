@@ -1,6 +1,6 @@
 using TechForge.Core.Dtos;
 
-namespace TechForge.Core.Interfaces;
+namespace TechForge.Services.Contracts;
 
 public interface IReviewService
 {
