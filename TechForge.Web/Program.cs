@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechForge.Core.Entities;
 using TechForge.Data;
 using TechForge.Data.Seeding;
+using TechForge.Services;
 
 namespace TechForge
 {
@@ -41,6 +42,8 @@ namespace TechForge
                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
                 options.SlidingExpiration = true;
             });
+
+            builder.Services.AddApplicationServices();
 
             builder.Services.AddControllersWithViews();
 
