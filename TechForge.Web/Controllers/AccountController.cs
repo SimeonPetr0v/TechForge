@@ -126,6 +126,67 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Profile()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var model = new ProfileViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email ?? string.Empty,
+            Address = user.Address,
+            ProfileImageUrl = user.ProfileImageUrl,
+            CreatedOn = user.CreatedOn
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Profile(ProfileViewModel model)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        if (!ModelState.IsValid)
+        {
+            model.Email = user.Email ?? string.Empty;
+            model.CreatedOn = user.CreatedOn;
+            return View(model);
+        }
+
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.Address = model.Address;
+        user.ProfileImageUrl = model.ProfileImageUrl;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            TempData["StatusMessage"] = "Your profile has been updated.";
+            return RedirectToAction(nameof(Profile));
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        model.Email = user.Email ?? string.Empty;
+        model.CreatedOn = user.CreatedOn;
+        return View(model);
+    }
+
+    [HttpGet]
     [AllowAnonymous]
     public IActionResult AccessDenied() => View();
 

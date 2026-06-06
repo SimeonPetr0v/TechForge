@@ -1,0 +1,90 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    var status = TempData["StatusMessage"] as string;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="h3 tf-gradient-text mb-4">My Profile</h1>
+
+            @if (!string.IsNullOrEmpty(status))
+            {
+                <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@status
+                </div>
+            }
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="tf-card p-4 text-center h-100">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" alt="Avatar"
+                                 class="rounded-circle mb-3" style="width:96px;height:96px;object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-person-circle" style="font-size:5rem;color:var(--tf-accent-2);"></i>
+                        }
+                        <h5 class="mt-2 mb-0">@Model.FirstName @Model.LastName</h5>
+                        <p class="text-muted small">@Model.Email</p>
+                        <hr class="border-secondary" />
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-calendar3 me-1"></i>Member since @Model.CreatedOn.ToString("MMM yyyy")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="tf-card p-4">
+                        <h5 class="mb-3">Edit details</h5>
+                        <form asp-action="Profile" method="post" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label asp-for="FirstName" class="form-label"></label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label asp-for="LastName" class="form-label"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" readonly />
+                                <span class="text-muted small">Email cannot be changed.</span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mt-3 mb-4">
+                                <label asp-for="ProfileImageUrl" class="form-label"></label>
+                                <input asp-for="ProfileImageUrl" class="form-control" placeholder="https://..." />
+                                <span asp-validation-for="ProfileImageUrl" class="text-danger small"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-tf-primary">
+                                <i class="bi bi-save me-2"></i>Save changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
