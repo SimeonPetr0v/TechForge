@@ -90,3 +90,47 @@ a:hover { color: var(--tf-accent); }
     border-top: 1px solid var(--tf-border);
     background: rgba(7,8,13,.5);
 }
+
+/* ---- Forms (dark theme) ---- */
+.form-label {
+    color: var(--tf-text);
+    font-weight: 500;
+    margin-bottom: .35rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--tf-bg-2);
+    border: 1px solid var(--tf-border);
+    color: var(--tf-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--tf-bg-2);
+    border-color: var(--tf-accent);
+    color: var(--tf-text);
+    box-shadow: 0 0 0 .2rem rgba(124, 92, 255, .25);
+}
+
+.form-control::placeholder { color: var(--tf-muted); }
+
+.form-check-input {
+    background-color: var(--tf-bg-2);
+    border: 1px solid var(--tf-border);
+}
+.form-check-input:checked {
+    background-color: var(--tf-accent);
+    border-color: var(--tf-accent);
+}
+.form-check-input:focus {
+    border-color: var(--tf-accent);
+    box-shadow: 0 0 0 .2rem rgba(124, 92, 255, .25);
+}
+
+code { color: var(--tf-accent-2); }
+
+.dropdown-menu-dark {
+    background-color: var(--tf-surface);
+    border: 1px solid var(--tf-border);
+}
