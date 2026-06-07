@@ -43,6 +43,12 @@ namespace TechForge
                 options.SlidingExpiration = true;
             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                    policy.RequireRole(DbInitializer.AdminRole));
+            });
+
             builder.Services.AddApplicationServices();
 
             builder.Services.AddControllersWithViews();
