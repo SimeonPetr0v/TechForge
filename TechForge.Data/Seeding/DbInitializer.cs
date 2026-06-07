@@ -151,7 +151,7 @@ public static class DbInitializer
                 Price = 1199.99m, StockQuantity = 25, CategoryId = byName["Graphics Cards"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2024, 1, 31),
                 Specifications = "16GB GDDR6X; 2550 MHz boost; 320W TDP; PCIe 4.0",
-                ImageUrl = "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1624701928517-44c8ac49d93c?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -160,7 +160,7 @@ public static class DbInitializer
                 Price = 949.99m, StockQuantity = 18, CategoryId = byName["Graphics Cards"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2022, 12, 13),
                 Specifications = "24GB GDDR6; 2500 MHz; 355W TDP; PCIe 4.0",
-                ImageUrl = "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -169,7 +169,7 @@ public static class DbInitializer
                 Price = 569.99m, StockQuantity = 40, CategoryId = byName["Processors"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2023, 10, 17),
                 Specifications = "24 cores / 32 threads; up to 6.0 GHz; LGA1700; 125W base",
-                ImageUrl = "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1625315714730-d0830cd368bd?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -178,7 +178,7 @@ public static class DbInitializer
                 Price = 549.99m, StockQuantity = 35, CategoryId = byName["Processors"],
                 Rating = 0, IsFeatured = false, ReleaseDate = new DateTime(2022, 9, 27),
                 Specifications = "16 cores / 32 threads; up to 5.7 GHz; AM5; 170W TDP",
-                ImageUrl = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -187,7 +187,7 @@ public static class DbInitializer
                 Price = 499.99m, StockQuantity = 22, CategoryId = byName["Motherboards"],
                 Rating = 0, IsFeatured = false, ReleaseDate = new DateTime(2022, 11, 3),
                 Specifications = "ATX; LGA1700; 4x DDR5; PCIe 5.0; Wi-Fi 6E",
-                ImageUrl = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1712701815718-29f5fe510c0e?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -196,7 +196,7 @@ public static class DbInitializer
                 Price = 124.99m, StockQuantity = 80, CategoryId = byName["Memory"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2023, 3, 15),
                 Specifications = "2x16GB; DDR5-6000; CL30; 1.35V",
-                ImageUrl = "https://images.unsplash.com/photo-1562976540-1502c2145186?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1592664474505-51c549ad15c5?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -205,7 +205,7 @@ public static class DbInitializer
                 Price = 169.99m, StockQuantity = 60, CategoryId = byName["Storage"],
                 Rating = 0, IsFeatured = false, ReleaseDate = new DateTime(2023, 1, 10),
                 Specifications = "2TB; PCIe 4.0; up to 7450 MB/s read; M.2 2280",
-                ImageUrl = "https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1628557118391-56cd62c9f2cb?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -214,7 +214,7 @@ public static class DbInitializer
                 Price = 189.99m, StockQuantity = 50, CategoryId = byName["Peripherals"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2023, 6, 1),
                 Specifications = "TKL; OmniPoint switches; per-key RGB; OLED smart display",
-                ImageUrl = "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1635987391914-cb84b567e68f?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -223,7 +223,7 @@ public static class DbInitializer
                 Price = 159.99m, StockQuantity = 70, CategoryId = byName["Peripherals"],
                 Rating = 0, IsFeatured = false, ReleaseDate = new DateTime(2023, 9, 21),
                 Specifications = "60g; HERO 2 sensor; up to 95h battery; LIGHTSPEED",
-                ImageUrl = "https://images.unsplash.com/photo-1527814050087-3793815479db?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -232,7 +232,7 @@ public static class DbInitializer
                 Price = 2799.99m, StockQuantity = 12, CategoryId = byName["Laptops"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2024, 2, 14),
                 Specifications = "16\" dual-mode; Core i9; RTX 4080; 32GB; 1TB SSD",
-                ImageUrl = "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1630794180018-433d915c34ac?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -241,7 +241,7 @@ public static class DbInitializer
                 Price = 1299.99m, StockQuantity = 15, CategoryId = byName["Monitors"],
                 Rating = 0, IsFeatured = false, ReleaseDate = new DateTime(2023, 5, 5),
                 Specifications = "49\"; 5120x1440; 240Hz; 1ms; 1000R curve",
-                ImageUrl = "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&h=450&fit=crop"
             },
             new()
             {
@@ -250,7 +250,7 @@ public static class DbInitializer
                 Price = 649.99m, StockQuantity = 28, CategoryId = byName["Monitors"],
                 Rating = 0, IsFeatured = true, ReleaseDate = new DateTime(2023, 8, 19),
                 Specifications = "27\"; 3840x2160; 144Hz; IPS; HDR400",
-                ImageUrl = "https://images.unsplash.com/photo-1546538915-a9e2c8d0b1a3?w=600"
+                ImageUrl = "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=600&h=450&fit=crop"
             }
         };
 

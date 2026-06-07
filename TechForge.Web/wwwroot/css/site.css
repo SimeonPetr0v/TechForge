@@ -134,3 +134,66 @@ code { color: var(--tf-accent-2); }
     background-color: var(--tf-surface);
     border: 1px solid var(--tf-border);
 }
+
+/* ---- Product cards ---- */
+.tf-product { overflow: hidden; }
+
+.tf-product-imgwrap {
+    position: relative;
+    display: block;
+    background: #0a0c14;
+}
+
+.tf-product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform .25s ease;
+}
+.tf-product:hover .tf-product-img { transform: scale(1.05); }
+
+.tf-product-name {
+    color: var(--tf-text);
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+    line-height: 1.3;
+}
+.tf-product-name:hover { color: var(--tf-accent-2); }
+
+.tf-price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--tf-text);
+}
+
+.tf-rating .bi { color: #ffc24b; font-size: .85rem; }
+
+.tf-badge-featured {
+    position: absolute; top: .5rem; left: .5rem;
+    background: linear-gradient(90deg, var(--tf-accent), var(--tf-accent-2));
+    color: #0b0c14;
+}
+.tf-badge-out {
+    position: absolute; top: .5rem; right: .5rem;
+    background: var(--tf-danger); color: #fff;
+}
+.tf-badge-stock { background: rgba(45,212,191,.15); color: var(--tf-success); }
+
+/* ---- Pagination ---- */
+.pagination .page-link {
+    background-color: var(--tf-surface);
+    border-color: var(--tf-border);
+    color: var(--tf-text);
+}
+.pagination .page-item.active .page-link {
+    background: linear-gradient(90deg, var(--tf-accent), var(--tf-accent-2));
+    border-color: var(--tf-accent);
+    color: #0b0c14;
+}
+.pagination .page-item.disabled .page-link {
+    background-color: var(--tf-surface);
+    border-color: var(--tf-border);
+    color: var(--tf-muted);
+}

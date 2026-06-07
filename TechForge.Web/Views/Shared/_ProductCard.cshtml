@@ -1,0 +1,80 @@
+@model ProductDto
+@{
+    var full = (int)Math.Floor(Model.Rating);
+    var hasHalf = (Model.Rating - full) >= 0.5;
+}
+
+<div class="tf-card tf-product h-100 d-flex flex-column">
+    <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="tf-product-imgwrap">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="tf-product-img" loading="lazy" />
+        }
+        else
+        {
+            <div class="tf-product-img d-flex align-items-center justify-content-center">
+                <i class="bi bi-cpu" style="font-size:3rem;color:var(--tf-muted);"></i>
+            </div>
+        }
+        @if (Model.IsFeatured)
+        {
+            <span class="badge tf-badge-featured">Featured</span>
+        }
+        @if (!Model.InStock)
+        {
+            <span class="badge tf-badge-out">Out of stock</span>
+        }
+    </a>
+
+    <div class="p-3 d-flex flex-column flex-grow-1">
+        <div class="small text-muted">@Model.Brand</div>
+        <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="tf-product-name">
+            @Model.Name
+        </a>
+
+        <div class="tf-rating my-1">
+            @for (var i = 1; i <= 5; i++)
+            {
+                if (i <= full)
+                {
+                    <i class="bi bi-star-fill"></i>
+                }
+                else if (i == full + 1 && hasHalf)
+                {
+                    <i class="bi bi-star-half"></i>
+                }
+                else
+                {
+                    <i class="bi bi-star"></i>
+                }
+            }
+            <span class="text-muted small ms-1">@Model.Rating.ToString("0.0")</span>
+        </div>
+
+        <div class="mt-auto">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="tf-price">@Model.Price.ToString("C")</span>
+                @if (Model.InStock)
+                {
+                    <span class="badge tf-badge-stock">In stock</span>
+                }
+            </div>
+
+            <div class="d-flex gap-2">
+                <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-tf-primary btn-sm w-100" @(Model.InStock ? "" : "disabled")>
+                        <i class="bi bi-cart-plus me-1"></i>Add
+                    </button>
+                </form>
+                <form asp-controller="Wishlist" asp-action="Toggle" method="post">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-outline-light btn-sm" title="Add to wishlist">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

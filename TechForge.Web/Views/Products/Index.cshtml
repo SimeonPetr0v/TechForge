@@ -1,0 +1,165 @@
+@model CatalogViewModel
+@{
+    ViewData["Title"] = "Catalog";
+    var products = Model.Products;
+
+    string SortLabel(ProductSortOption s) => s switch
+    {
+        ProductSortOption.PriceLowToHigh => "Price: Low to High",
+        ProductSortOption.PriceHighToLow => "Price: High to Low",
+        ProductSortOption.Rating => "Top Rated",
+        ProductSortOption.Popularity => "Most Popular",
+        ProductSortOption.NameAToZ => "Name: A to Z",
+        _ => "Newest"
+    };
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+        <h1 class="h3 tf-gradient-text mb-0">Catalog</h1>
+        <span class="text-muted small">@products.TotalCount product(s) found</span>
+    </div>
+
+    <div class="row g-4">
+        <!-- Sidebar filters -->
+        <aside class="col-lg-3">
+            <form asp-action="Index" method="get" class="tf-card p-3">
+                <h6 class="text-uppercase text-muted small mb-3">Search</h6>
+                <div class="mb-3">
+                    <input type="text" name="Search" value="@Model.Search" class="form-control form-control-sm"
+                           placeholder="Search products..." />
+                </div>
+
+                <h6 class="text-uppercase text-muted small mb-2">Category</h6>
+                <div class="mb-3">
+                    <select name="CategoryId" class="form-select form-select-sm">
+                        <option value="">All categories</option>
+                        @foreach (var c in Model.Categories)
+                        {
+                            if (Model.CategoryId == c.Id)
+                            {
+                                <option value="@c.Id" selected>@c.Name (@c.ProductCount)</option>
+                            }
+                            else
+                            {
+                                <option value="@c.Id">@c.Name (@c.ProductCount)</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <h6 class="text-uppercase text-muted small mb-2">Brand</h6>
+                <div class="mb-3">
+                    <select name="Brand" class="form-select form-select-sm">
+                        <option value="">All brands</option>
+                        @foreach (var b in Model.Brands)
+                        {
+                            if (Model.Brand == b)
+                            {
+                                <option value="@b" selected>@b</option>
+                            }
+                            else
+                            {
+                                <option value="@b">@b</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <h6 class="text-uppercase text-muted small mb-2">Price range</h6>
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <input type="number" step="0.01" min="0" name="MinPrice" value="@Model.MinPrice"
+                               class="form-control form-control-sm" placeholder="Min" />
+                    </div>
+                    <div class="col-6">
+                        <input type="number" step="0.01" min="0" name="MaxPrice" value="@Model.MaxPrice"
+                               class="form-control form-control-sm" placeholder="Max" />
+                    </div>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="InStockOnly" value="true"
+                           id="inStock" @(Model.InStockOnly ? "checked" : "") />
+                    <label class="form-check-label small" for="inStock">In stock only</label>
+                </div>
+
+                <input type="hidden" name="Sort" value="@Model.Sort" />
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-tf-primary btn-sm">Apply filters</button>
+                    <a asp-action="Index" class="btn btn-outline-light btn-sm">Reset</a>
+                </div>
+            </form>
+        </aside>
+
+        <!-- Product grid -->
+        <div class="col-lg-9">
+            <!-- Sort bar -->
+            <form asp-action="Index" method="get" class="d-flex justify-content-end align-items-center mb-3">
+                <input type="hidden" name="Search" value="@Model.Search" />
+                <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+                <input type="hidden" name="Brand" value="@Model.Brand" />
+                <input type="hidden" name="MinPrice" value="@Model.MinPrice" />
+                <input type="hidden" name="MaxPrice" value="@Model.MaxPrice" />
+                <input type="hidden" name="InStockOnly" value="@Model.InStockOnly.ToString().ToLower()" />
+                <label class="text-muted small me-2 mb-0">Sort by</label>
+                <select name="Sort" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                    @foreach (ProductSortOption opt in Enum.GetValues(typeof(ProductSortOption)))
+                    {
+                        if (Model.Sort == opt)
+                        {
+                            <option value="@opt" selected>@SortLabel(opt)</option>
+                        }
+                        else
+                        {
+                            <option value="@opt">@SortLabel(opt)</option>
+                        }
+                    }
+                </select>
+            </form>
+
+            @if (products.Items.Count == 0)
+            {
+                <div class="tf-card p-5 text-center">
+                    <i class="bi bi-search" style="font-size:3rem;color:var(--tf-muted);"></i>
+                    <p class="text-muted mt-3 mb-0">No products match your filters.</p>
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+                    @foreach (var product in products.Items)
+                    {
+                        <div class="col">
+                            <partial name="_ProductCard" model="product" />
+                        </div>
+                    }
+                </div>
+
+                @if (products.TotalPages > 1)
+                {
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(products.HasPrevious ? "" : "disabled")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-all-route-data="Model.RouteValues()" asp-route-Page="@(products.Page - 1)">Previous</a>
+                            </li>
+                            @for (var p = 1; p <= products.TotalPages; p++)
+                            {
+                                <li class="page-item @(p == products.Page ? "active" : "")">
+                                    <a class="page-link" asp-action="Index"
+                                       asp-all-route-data="Model.RouteValues()" asp-route-Page="@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(products.HasNext ? "" : "disabled")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-all-route-data="Model.RouteValues()" asp-route-Page="@(products.Page + 1)">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            }
+        </div>
+    </div>
+</div>
