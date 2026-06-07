@@ -20,6 +20,7 @@ public class MappingProfile : Profile
                 o => o.MapFrom(s => s.Reviews.OrderByDescending(r => r.CreatedOn)));
 
         CreateMap<Review, ReviewDto>()
+            .ForMember(d => d.AuthorId, o => o.MapFrom(s => s.UserId))
             .ForMember(d => d.AuthorName,
                 o => o.MapFrom(s => s.User != null ? s.User.FirstName + " " + s.User.LastName : "Anonymous"));
 

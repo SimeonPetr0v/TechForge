@@ -1,0 +1,233 @@
+@model ProductDetailsViewModel
+@{
+    var p = Model.Product;
+    ViewData["Title"] = p.Name;
+    var full = (int)Math.Floor(p.Rating);
+    var hasHalf = (p.Rating - full) >= 0.5;
+    var specs = string.IsNullOrWhiteSpace(p.Specifications)
+        ? Array.Empty<string>()
+        : p.Specifications.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var reviewSuccess = TempData["ReviewSuccess"] as string;
+    var reviewError = TempData["ReviewError"] as string;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index">Catalog</a></li>
+            <li class="breadcrumb-item">
+                <a asp-controller="Products" asp-action="Index" asp-route-CategoryId="@p.CategoryId">@p.CategoryName</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@p.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Image -->
+        <div class="col-lg-6">
+            <div class="tf-card p-2 position-relative">
+                @if (!string.IsNullOrEmpty(p.ImageUrl))
+                {
+                    <img src="@p.ImageUrl" alt="@p.Name" class="w-100 rounded" style="height:380px;object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center" style="height:380px;">
+                        <i class="bi bi-cpu" style="font-size:5rem;color:var(--tf-muted);"></i>
+                    </div>
+                }
+                @if (p.IsFeatured)
+                {
+                    <span class="badge tf-badge-featured">Featured</span>
+                }
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="col-lg-6">
+            <div class="text-muted small text-uppercase">@p.Brand</div>
+            <h1 class="h3 mb-2">@p.Name</h1>
+
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="tf-rating">
+                    @for (var i = 1; i <= 5; i++)
+                    {
+                        if (i <= full)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                        else if (i == full + 1 && hasHalf)
+                        {
+                            <i class="bi bi-star-half"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    }
+                </span>
+                <span class="text-muted small">@p.Rating.ToString("0.0") &middot; @p.ReviewCount review(s)</span>
+            </div>
+
+            <div class="tf-price mb-3" style="font-size:1.8rem;">@p.Price.ToString("C")</div>
+
+            <p class="mb-3">
+                @if (p.InStock)
+                {
+                    <span class="badge tf-badge-stock">In stock</span>
+                    <span class="text-muted small ms-1">@p.StockQuantity available</span>
+                }
+                else
+                {
+                    <span class="badge tf-badge-out">Out of stock</span>
+                }
+            </p>
+
+            <div class="d-flex gap-2 mb-4">
+                <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2">
+                    <input type="hidden" name="productId" value="@p.Id" />
+                    <input type="number" name="quantity" value="1" min="1" max="@Math.Max(1, p.StockQuantity)"
+                           class="form-control" style="width:90px;" @(p.InStock ? "" : "disabled") />
+                    <button type="submit" class="btn btn-tf-primary px-4" @(p.InStock ? "" : "disabled")>
+                        <i class="bi bi-cart-plus me-2"></i>Add to cart
+                    </button>
+                </form>
+                <form asp-controller="Wishlist" asp-action="Toggle" method="post">
+                    <input type="hidden" name="productId" value="@p.Id" />
+                    <button type="submit" class="btn btn-outline-light" title="Add to wishlist">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </form>
+            </div>
+
+            @if (specs.Length > 0)
+            {
+                <h6 class="text-uppercase text-muted small">Specifications</h6>
+                <ul class="list-unstyled tf-specs">
+                    @foreach (var spec in specs)
+                    {
+                        <li><i class="bi bi-check2 me-2"></i>@spec</li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="tf-card p-4 mt-4">
+        <h5>Description</h5>
+        <p class="text-muted mb-0">@p.Description</p>
+    </div>
+
+    <!-- Reviews -->
+    <div class="mt-4">
+        <h4 class="mb-3">Reviews <span class="text-muted small">(@p.ReviewCount)</span></h4>
+
+        @if (!string.IsNullOrEmpty(reviewSuccess))
+        {
+            <div class="alert alert-success py-2"><i class="bi bi-check-circle me-2"></i>@reviewSuccess</div>
+        }
+        @if (!string.IsNullOrEmpty(reviewError))
+        {
+            <div class="alert alert-danger py-2"><i class="bi bi-exclamation-circle me-2"></i>@reviewError</div>
+        }
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                @if (p.Reviews.Count == 0)
+                {
+                    <div class="tf-card p-4 text-center text-muted">No reviews yet. Be the first!</div>
+                }
+                else
+                {
+                    foreach (var r in p.Reviews)
+                    {
+                        <div class="tf-card p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong>@r.AuthorName</strong>
+                                    <span class="tf-rating ms-2">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            <i class="bi @(i <= r.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                        }
+                                    </span>
+                                </div>
+                                <small class="text-muted">@r.CreatedOn.ToString("MMM d, yyyy")</small>
+                            </div>
+                            <p class="mb-1 mt-2">@r.Comment</p>
+                            @if (Model.IsAdmin || r.AuthorId == Model.CurrentUserId)
+                            {
+                                <form asp-controller="Reviews" asp-action="Delete" method="post" class="text-end">
+                                    <input type="hidden" name="reviewId" value="@r.Id" />
+                                    <input type="hidden" name="productId" value="@p.Id" />
+                                    <button type="submit" class="btn btn-link btn-sm text-danger p-0">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Add review -->
+            <div class="col-lg-5">
+                <div class="tf-card p-4">
+                    <h6 class="mb-3">Write a review</h6>
+                    @if (!Model.IsAuthenticated)
+                    {
+                        <p class="text-muted small mb-0">
+                            <a asp-controller="Account" asp-action="Login"
+                               asp-route-returnUrl="@Url.Action("Details", "Products", new { id = p.Id })">Sign in</a>
+                            to leave a review.
+                        </p>
+                    }
+                    else if (Model.HasReviewed)
+                    {
+                        <p class="text-muted small mb-0"><i class="bi bi-check-circle me-1"></i>You've already reviewed this product.</p>
+                    }
+                    else
+                    {
+                        <form asp-controller="Reviews" asp-action="Create" method="post">
+                            <input type="hidden" name="productId" value="@p.Id" />
+                            <div class="mb-2">
+                                <label class="form-label small">Rating</label>
+                                <select name="rating" class="form-select form-select-sm">
+                                    <option value="5">★★★★★ Excellent</option>
+                                    <option value="4">★★★★ Good</option>
+                                    <option value="3">★★★ Average</option>
+                                    <option value="2">★★ Poor</option>
+                                    <option value="1">★ Terrible</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">Comment</label>
+                                <textarea name="comment" class="form-control form-control-sm" rows="3"
+                                          maxlength="1000" placeholder="Share your thoughts..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-tf-primary btn-sm w-100">Submit review</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related -->
+    @if (Model.Related.Count > 0)
+    {
+        <div class="mt-5">
+            <h4 class="mb-3">Related products</h4>
+            <div class="row row-cols-2 row-cols-md-4 g-4">
+                @foreach (var related in Model.Related)
+                {
+                    <div class="col">
+                        <partial name="_ProductCard" model="related" />
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TechForge.Core.Entities;
 using TechForge.Core.Querying;
 using TechForge.Services.Contracts;
 using TechForge.Web.ViewModels;
@@ -11,11 +13,19 @@ public class ProductsController : Controller
 
     private readonly IProductService _products;
     private readonly ICategoryService _categories;
+    private readonly IReviewService _reviews;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ProductsController(IProductService products, ICategoryService categories)
+    public ProductsController(
+        IProductService products,
+        ICategoryService categories,
+        IReviewService reviews,
+        UserManager<ApplicationUser> userManager)
     {
         _products = products;
         _categories = categories;
+        _reviews = reviews;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -39,5 +49,31 @@ public class ProductsController : Controller
         filter.Brands = await _products.GetBrandsAsync();
 
         return View(filter);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        var product = await _products.GetDetailsAsync(id);
+        if (product is null)
+        {
+            return NotFound();
+        }
+
+        var isAuthenticated = User.Identity?.IsAuthenticated == true;
+        var currentUserId = isAuthenticated ? _userManager.GetUserId(User) : null;
+
+        var vm = new ProductDetailsViewModel
+        {
+            Product = product,
+            Related = await _products.GetRelatedAsync(id, 4),
+            IsAuthenticated = isAuthenticated,
+            IsAdmin = User.IsInRole("Admin"),
+            CurrentUserId = currentUserId,
+            HasReviewed = currentUserId is not null
+                && await _reviews.HasUserReviewedAsync(id, currentUserId)
+        };
+
+        return View(vm);
     }
 }

@@ -181,6 +181,21 @@ code { color: var(--tf-accent-2); }
 }
 .tf-badge-stock { background: rgba(45,212,191,.15); color: var(--tf-success); }
 
+/* ---- Product details ---- */
+.breadcrumb-item, .breadcrumb-item a { color: var(--tf-muted); text-decoration: none; }
+.breadcrumb-item.active { color: var(--tf-text); }
+.breadcrumb-item + .breadcrumb-item::before { color: var(--tf-border); }
+
+.tf-specs li { padding: .25rem 0; color: var(--tf-text); border-bottom: 1px solid var(--tf-border); }
+.tf-specs .bi { color: var(--tf-success); }
+
+.alert-success {
+    background: rgba(45,212,191,.12); border: 1px solid rgba(45,212,191,.3); color: var(--tf-success);
+}
+.alert-danger {
+    background: rgba(255,77,109,.12); border: 1px solid rgba(255,77,109,.3); color: var(--tf-danger);
+}
+
 /* ---- Pagination ---- */
 .pagination .page-link {
     background-color: var(--tf-surface);
