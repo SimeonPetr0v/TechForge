@@ -32,15 +32,15 @@ public class CartController : Controller
     public async Task<IActionResult> Add(int productId, int quantity = 1)
     {
         var added = await _cart.AddAsync(UserId, productId, quantity);
-        if (added)
+        var message = added ? "Added to your cart." : "Sorry, that item is unavailable.";
+
+        if (IsAjaxRequest())
         {
-            TempData["FlashSuccess"] = "Added to your cart.";
-        }
-        else
-        {
-            TempData["FlashError"] = "Sorry, that item is unavailable.";
+            var count = await _cart.GetItemCountAsync(UserId);
+            return Json(new { success = added, count, message });
         }
 
+        TempData[added ? "FlashSuccess" : "FlashError"] = message;
         return RedirectToReferer();
     }
 
@@ -67,6 +67,8 @@ public class CartController : Controller
         await _cart.ClearAsync(UserId);
         return RedirectToAction(nameof(Index));
     }
+
+    private bool IsAjaxRequest() => Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
     private IActionResult RedirectToReferer()
     {

@@ -3,11 +3,9 @@
 <li class="nav-item">
     <a class="nav-link position-relative" asp-controller="Cart" asp-action="Index" title="Cart">
         <i class="bi bi-cart3 fs-5"></i>
-        @if (Model > 0)
-        {
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill tf-cart-badge">
-                @Model
-            </span>
-        }
+        <span id="cart-count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill tf-cart-badge @(Model > 0 ? "" : "d-none")">
+            @Model
+        </span>
     </a>
 </li>

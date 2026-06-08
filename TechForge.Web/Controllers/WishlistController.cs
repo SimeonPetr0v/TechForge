@@ -32,10 +32,14 @@ public class WishlistController : Controller
     public async Task<IActionResult> Toggle(int productId)
     {
         var nowInWishlist = await _wishlist.ToggleAsync(UserId, productId);
-        TempData["FlashSuccess"] = nowInWishlist
-            ? "Added to your wishlist."
-            : "Removed from your wishlist.";
+        var message = nowInWishlist ? "Added to your wishlist." : "Removed from your wishlist.";
 
+        if (IsAjaxRequest())
+        {
+            return Json(new { inWishlist = nowInWishlist, message });
+        }
+
+        TempData["FlashSuccess"] = message;
         return RedirectToReferer();
     }
 
@@ -46,6 +50,8 @@ public class WishlistController : Controller
         await _wishlist.RemoveAsync(UserId, productId);
         return RedirectToAction(nameof(Index));
     }
+
+    private bool IsAjaxRequest() => Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
     private IActionResult RedirectToReferer()
     {

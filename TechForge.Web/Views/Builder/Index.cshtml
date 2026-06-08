@@ -1,0 +1,59 @@
+@model IReadOnlyList<CategoryDto>
+@{
+    ViewData["Title"] = "PC Builder";
+}
+
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h1 class="h3 tf-gradient-text mb-1"><i class="bi bi-cpu me-2"></i>PC Builder</h1>
+        <p class="text-muted">Pick a component for each slot and we'll total it up. Add your whole build to the cart in one click.</p>
+    </div>
+
+    <form asp-controller="Builder" asp-action="AddBuild" method="post">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="tf-card p-0">
+                    @foreach (var category in Model)
+                    {
+                        <div class="tf-build-slot d-flex align-items-center gap-3 p-3" data-slot>
+                            <div class="tf-build-slot-icon"><i class="bi bi-pc-display-horizontal"></i></div>
+                            <div class="flex-grow-1">
+                                <label class="form-label small text-muted mb-1">@category.Name</label>
+                                <select name="productIds" class="form-select tf-build-select"
+                                        data-category-id="@category.Id" data-loading="true">
+                                    <option value="0">Loading @category.Name.ToLower()...</option>
+                                </select>
+                            </div>
+                            <div class="tf-price tf-slot-price" style="min-width:90px;text-align:right;">—</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="tf-card p-4 position-sticky" style="top:90px;">
+                    <h5 class="mb-3">Your build</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Components selected</span>
+                        <span id="build-count">0</span>
+                    </div>
+                    <hr class="border-secondary" />
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Estimated total</strong>
+                        <strong class="tf-price" id="build-total">$0.00</strong>
+                    </div>
+                    <button type="submit" class="btn btn-tf-primary w-100">
+                        <i class="bi bi-cart-plus me-2"></i>Add build to cart
+                    </button>
+                    <p class="text-muted small mt-3 mb-0">
+                        <i class="bi bi-info-circle me-1"></i>You'll need to be signed in to add a build.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/builder.js" asp-append-version="true"></script>
+}

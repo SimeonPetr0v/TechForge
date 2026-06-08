@@ -70,7 +70,7 @@
                             <div class="mt-auto">
                                 <div class="tf-price mb-2">@item.Price.ToString("C")</div>
                                 <div class="d-flex gap-2">
-                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1">
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1" data-ajax="cart-add">
                                         <input type="hidden" name="productId" value="@item.ProductId" />
                                         <input type="hidden" name="quantity" value="1" />
                                         <button type="submit" class="btn btn-tf-primary btn-sm w-100" @(item.InStock ? "" : "disabled")>

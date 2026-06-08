@@ -47,6 +47,28 @@ namespace TechForge
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
                 options.SlidingExpiration = true;
+
+                // For AJAX / API requests, return 401/403 instead of redirecting to HTML pages.
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (IsApiOrAjax(context.Request))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    if (IsApiOrAjax(context.Request))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        return Task.CompletedTask;
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
             });
 
             builder.Services.AddAuthorization(options =>
@@ -93,6 +115,12 @@ namespace TechForge
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+        }
+
+        private static bool IsApiOrAjax(HttpRequest request)
+        {
+            return request.Headers["X-Requested-With"] == "XMLHttpRequest"
+                || request.Path.StartsWithSegments("/api");
         }
     }
 }

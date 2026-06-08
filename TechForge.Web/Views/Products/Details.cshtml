@@ -85,7 +85,7 @@
             </p>
 
             <div class="d-flex gap-2 mb-4">
-                <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2">
+                <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2" data-ajax="cart-add">
                     <input type="hidden" name="productId" value="@p.Id" />
                     <input type="number" name="quantity" value="1" min="1" max="@Math.Max(1, p.StockQuantity)"
                            class="form-control" style="width:90px;" @(p.InStock ? "" : "disabled") />
@@ -93,9 +93,9 @@
                         <i class="bi bi-cart-plus me-2"></i>Add to cart
                     </button>
                 </form>
-                <form asp-controller="Wishlist" asp-action="Toggle" method="post">
+                <form asp-controller="Wishlist" asp-action="Toggle" method="post" data-ajax="wishlist-toggle">
                     <input type="hidden" name="productId" value="@p.Id" />
-                    <button type="submit" class="btn btn-outline-light" title="Add to wishlist">
+                    <button type="submit" class="btn btn-outline-light" title="Add to wishlist" data-wishlist-btn>
                         <i class="bi bi-heart"></i>
                     </button>
                 </form>
