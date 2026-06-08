@@ -1,0 +1,94 @@
+@model IReadOnlyList<WishlistItemDto>
+@{
+    ViewData["Title"] = "Wishlist";
+}
+
+<div class="container py-4">
+    <h1 class="h3 tf-gradient-text mb-4">Your Wishlist</h1>
+
+    @if (Model.Count == 0)
+    {
+        <div class="tf-card p-5 text-center">
+            <i class="bi bi-heart" style="font-size:3rem;color:var(--tf-muted);"></i>
+            <p class="text-muted mt-3 mb-3">You haven't saved any products yet.</p>
+            <a class="btn btn-tf-primary" asp-controller="Products" asp-action="Index">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i>Browse the catalog
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="tf-card tf-product h-100 d-flex flex-column">
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId" class="tf-product-imgwrap">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" alt="@item.ProductName" class="tf-product-img" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="tf-product-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-cpu" style="font-size:3rem;color:var(--tf-muted);"></i>
+                                </div>
+                            }
+                            @if (!item.InStock)
+                            {
+                                <span class="badge tf-badge-out">Out of stock</span>
+                            }
+                        </a>
+
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="small text-muted">@item.Brand</div>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId" class="tf-product-name">
+                                @item.ProductName
+                            </a>
+                            <div class="tf-rating my-1">
+                                @{
+                                    var full = (int)Math.Floor(item.Rating);
+                                    var hasHalf = (item.Rating - full) >= 0.5;
+                                }
+                                @for (var i = 1; i <= 5; i++)
+                                {
+                                    if (i <= full)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    else if (i == full + 1 && hasHalf)
+                                    {
+                                        <i class="bi bi-star-half"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                }
+                            </div>
+
+                            <div class="mt-auto">
+                                <div class="tf-price mb-2">@item.Price.ToString("C")</div>
+                                <div class="d-flex gap-2">
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-tf-primary btn-sm w-100" @(item.InStock ? "" : "disabled")>
+                                            <i class="bi bi-cart-plus me-1"></i>Add
+                                        </button>
+                                    </form>
+                                    <form asp-controller="Wishlist" asp-action="Remove" method="post">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from wishlist">
+                                            <i class="bi bi-heart-fill"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
