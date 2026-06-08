@@ -29,6 +29,12 @@ body.tf-body {
 a { color: var(--tf-accent-2); }
 a:hover { color: var(--tf-accent); }
 
+/* Bootstrap muted text resolves to a dark gray by default; make it readable on the dark theme */
+.text-muted,
+.text-body-secondary { color: #b4bad2 !important; }
+
+.text-light-emphasis { color: #d2d6e8 !important; }
+
 .tf-gradient-text {
     background: linear-gradient(90deg, var(--tf-accent-2), var(--tf-accent));
     -webkit-background-clip: text;
@@ -180,6 +186,23 @@ code { color: var(--tf-accent-2); }
     background: var(--tf-danger); color: #fff;
 }
 .tf-badge-stock { background: rgba(45,212,191,.15); color: var(--tf-success); }
+
+/* ---- Cart ---- */
+.tf-cart-badge {
+    background: linear-gradient(90deg, var(--tf-accent), var(--tf-accent-2));
+    color: #0b0c14;
+    font-size: .7rem;
+}
+
+.tf-cart-row + .tf-cart-row { border-top: 1px solid var(--tf-border); }
+
+.tf-cart-img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #0a0c14;
+}
 
 /* ---- Product details ---- */
 .breadcrumb-item, .breadcrumb-item a { color: var(--tf-muted); text-decoration: none; }

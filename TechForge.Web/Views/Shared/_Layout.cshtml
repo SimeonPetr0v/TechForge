@@ -26,6 +26,7 @@
                     <li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Catalog</a></li>
                 </ul>
                 <ul class="navbar-nav align-items-lg-center">
+                    @await Component.InvokeAsync("CartSummary")
                     <partial name="_LoginPartial" />
                 </ul>
             </div>
@@ -33,6 +34,29 @@
     </nav>
 
     <main class="tf-main">
+        @{
+            var flashSuccess = TempData["FlashSuccess"] as string;
+            var flashError = TempData["FlashError"] as string;
+        }
+        @if (!string.IsNullOrEmpty(flashSuccess) || !string.IsNullOrEmpty(flashError))
+        {
+            <div class="container mt-3">
+                @if (!string.IsNullOrEmpty(flashSuccess))
+                {
+                    <div class="alert alert-success alert-dismissible fade show py-2 mb-0" role="alert">
+                        <i class="bi bi-check-circle me-2"></i>@flashSuccess
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(flashError))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show py-2 mb-0" role="alert">
+                        <i class="bi bi-exclamation-circle me-2"></i>@flashError
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+            </div>
+        }
         @RenderBody()
     </main>
 
