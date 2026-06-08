@@ -1,25 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
-using TechForge.Web.Models;
-using System.Diagnostics;
+using TechForge.Core.Querying;
+using TechForge.Services.Contracts;
+using TechForge.Web.ViewModels;
 
 namespace TechForge.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IProductService _products;
+    private readonly ICategoryService _categories;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IProductService products, ICategoryService categories)
     {
-        _logger = logger;
+        _products = products;
+        _categories = categories;
     }
 
-    public IActionResult Index() => View();
+    public async Task<IActionResult> Index()
+    {
+        var newest = await _products.GetCatalogAsync(new ProductQueryOptions
+        {
+            Sort = ProductSortOption.Newest,
+            PageSize = 4
+        });
+
+        var model = new HomeViewModel
+        {
+            Featured = await _products.GetFeaturedAsync(4),
+            Newest = newest.Items,
+            Categories = await _categories.GetAllAsync()
+        };
+
+        return View(model);
+    }
 
     public IActionResult Privacy() => View();
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
 }

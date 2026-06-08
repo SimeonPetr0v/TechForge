@@ -5,6 +5,7 @@ using TechForge.Core.Entities;
 using TechForge.Data;
 using TechForge.Data.Seeding;
 using TechForge.Services;
+using TechForge.Web.Middleware;
 
 namespace TechForge
 {
@@ -71,9 +72,11 @@ namespace TechForge
                 await DbInitializer.SeedAsync(context, userManager, roleManager, configuration);
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 

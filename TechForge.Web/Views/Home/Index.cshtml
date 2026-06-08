@@ -1,3 +1,4 @@
+@model HomeViewModel
 @{
     ViewData["Title"] = "Home";
 }
@@ -15,6 +16,61 @@
     </div>
 </section>
 
+<!-- Shop by category -->
+@if (Model.Categories.Count > 0)
+{
+    <section class="container py-5">
+        <h2 class="h4 mb-4">Shop by category</h2>
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col">
+                    <a class="tf-category-tile" asp-controller="Products" asp-action="Index" asp-route-CategoryId="@category.Id">
+                        <i class="bi bi-collection"></i>
+                        <span class="tf-category-name">@category.Name</span>
+                        <span class="tf-category-count">@category.ProductCount item(s)</span>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Featured products -->
+@if (Model.Featured.Count > 0)
+{
+    <section class="container py-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="h4 mb-0"><i class="bi bi-star-fill text-warning me-2"></i>Featured deals</h2>
+            <a asp-controller="Products" asp-action="Index" class="small">View all</a>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            @foreach (var product in Model.Featured)
+            {
+                <div class="col"><partial name="_ProductCard" model="product" /></div>
+            }
+        </div>
+    </section>
+}
+
+<!-- New arrivals -->
+@if (Model.Newest.Count > 0)
+{
+    <section class="container py-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="h4 mb-0"><i class="bi bi-lightning-charge-fill text-info me-2"></i>New arrivals</h2>
+            <a asp-controller="Products" asp-action="Index" asp-route-Sort="Newest" class="small">View all</a>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            @foreach (var product in Model.Newest)
+            {
+                <div class="col"><partial name="_ProductCard" model="product" /></div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Trust badges -->
 <section class="container py-5">
     <div class="row g-4">
         <div class="col-md-4">

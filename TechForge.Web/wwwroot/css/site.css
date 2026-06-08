@@ -187,6 +187,30 @@ code { color: var(--tf-accent-2); }
 }
 .tf-badge-stock { background: rgba(45,212,191,.15); color: var(--tf-success); }
 
+/* ---- Category tiles ---- */
+.tf-category-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .15rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--tf-surface), var(--tf-surface-2));
+    border: 1px solid var(--tf-border);
+    text-decoration: none;
+    color: var(--tf-text);
+    height: 100%;
+    transition: transform .15s ease, border-color .15s ease;
+}
+.tf-category-tile:hover { transform: translateY(-2px); border-color: var(--tf-accent); color: var(--tf-text); }
+.tf-category-tile .bi { font-size: 1.4rem; color: var(--tf-accent-2); margin-bottom: .25rem; }
+.tf-category-name { font-weight: 600; }
+.tf-category-count { font-size: .8rem; color: var(--tf-muted); }
+
+/* ---- Error pages ---- */
+.tf-error-page .tf-error-icon { font-size: 3rem; color: var(--tf-accent-2); }
+.tf-error-page .display-1 { font-size: 5rem; }
+
 /* ---- Tables ---- */
 .tf-table {
     color: var(--tf-text);

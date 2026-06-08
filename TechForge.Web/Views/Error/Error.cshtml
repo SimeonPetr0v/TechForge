@@ -1,0 +1,12 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container py-5 text-center tf-error-page">
+    <div class="display-1 fw-bold tf-gradient-text">@(Model.StatusCode == 0 ? 500 : Model.StatusCode)</div>
+    <i class="bi bi-exclamation-octagon tf-error-icon"></i>
+    <h1 class="h3 mt-3 text-light">Something went wrong</h1>
+    <p class="text-muted">An error occurred while processing your request.</p>
+    <a class="btn btn-tf-primary mt-3" asp-controller="Home" asp-action="Index"><i class="bi bi-house me-2"></i>Back to home</a>
+</div>
