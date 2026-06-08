@@ -4,6 +4,8 @@ namespace TechForge.Services.Contracts;
 
 public interface IReviewService
 {
+    Task<IReadOnlyList<ReviewDto>> GetAllAsync();
+
     Task<IReadOnlyList<ReviewDto>> GetForProductAsync(int productId);
 
     Task<ReviewDto?> AddAsync(int productId, string userId, int rating, string comment);

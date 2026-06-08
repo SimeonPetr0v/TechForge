@@ -1,0 +1,49 @@
+@model IReadOnlyList<ReviewDto>
+@{
+    ViewData["Title"] = "Manage Reviews";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="h3 tf-gradient-text mb-4">Reviews</h1>
+
+<div class="tf-card p-0">
+    <div class="table-responsive">
+        <table class="table tf-table mb-0 align-middle">
+            <thead>
+                <tr><th>Product</th><th>Author</th><th>Rating</th><th>Comment</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="6" class="text-muted text-center py-4">No reviews yet.</td></tr>
+                }
+                @foreach (var review in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="tf-product-name" asp-controller="Products" asp-action="Details" asp-route-id="@review.ProductId">
+                                @review.ProductName
+                            </a>
+                        </td>
+                        <td class="text-muted">@review.AuthorName</td>
+                        <td class="tf-rating">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                            }
+                        </td>
+                        <td class="text-muted" style="max-width:280px;">@review.Comment</td>
+                        <td class="text-muted">@review.CreatedOn.ToString("MMM d, yyyy")</td>
+                        <td class="text-end">
+                            <form asp-controller="Admin" asp-action="ReviewDelete" method="post"
+                                  onsubmit="return confirm('Delete this review?');">
+                                <input type="hidden" name="id" value="@review.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

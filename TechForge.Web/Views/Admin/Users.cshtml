@@ -1,0 +1,33 @@
+@model IReadOnlyList<AdminUserViewModel>
+@{
+    ViewData["Title"] = "Manage Users";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="h3 tf-gradient-text mb-4">Users</h1>
+
+<div class="tf-card p-0">
+    <div class="table-responsive">
+        <table class="table tf-table mb-0 align-middle">
+            <thead>
+                <tr><th>Name</th><th>Email</th><th>Roles</th><th>Member since</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td><strong>@user.FullName</strong></td>
+                        <td class="text-muted">@user.Email</td>
+                        <td>
+                            @foreach (var role in user.Roles.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                            {
+                                <span class="badge @(role == "Admin" ? "tf-status-shipped" : "tf-status-processing") me-1">@role</span>
+                            }
+                        </td>
+                        <td class="text-muted">@user.CreatedOn.ToString("MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

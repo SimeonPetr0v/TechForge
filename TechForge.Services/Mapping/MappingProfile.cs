@@ -21,6 +21,7 @@ public class MappingProfile : Profile
 
         CreateMap<Review, ReviewDto>()
             .ForMember(d => d.AuthorId, o => o.MapFrom(s => s.UserId))
+            .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product != null ? s.Product.Name : string.Empty))
             .ForMember(d => d.AuthorName,
                 o => o.MapFrom(s => s.User != null ? s.User.FirstName + " " + s.User.LastName : "Anonymous"));
 

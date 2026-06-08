@@ -1,0 +1,29 @@
+@{
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    string active(params string[] names) => names.Contains(action) ? "active" : "";
+}
+
+<div class="tf-card p-2 tf-admin-nav">
+    <a class="tf-admin-link @active("Index")" asp-controller="Admin" asp-action="Index">
+        <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+    <a class="tf-admin-link @active("Products", "ProductForm", "ProductCreate", "ProductEdit")" asp-controller="Admin" asp-action="Products">
+        <i class="bi bi-box-seam"></i> Products
+    </a>
+    <a class="tf-admin-link @active("Categories", "CategoryForm", "CategoryCreate", "CategoryEdit")" asp-controller="Admin" asp-action="Categories">
+        <i class="bi bi-tags"></i> Categories
+    </a>
+    <a class="tf-admin-link @active("Orders")" asp-controller="Admin" asp-action="Orders">
+        <i class="bi bi-receipt"></i> Orders
+    </a>
+    <a class="tf-admin-link @active("Users")" asp-controller="Admin" asp-action="Users">
+        <i class="bi bi-people"></i> Users
+    </a>
+    <a class="tf-admin-link @active("Reviews")" asp-controller="Admin" asp-action="Reviews">
+        <i class="bi bi-chat-square-text"></i> Reviews
+    </a>
+    <hr class="border-secondary my-2" />
+    <a class="tf-admin-link" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-arrow-left"></i> Back to store
+    </a>
+</div>

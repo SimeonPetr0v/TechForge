@@ -1,0 +1,55 @@
+@model IReadOnlyList<ProductDto>
+@{
+    ViewData["Title"] = "Manage Products";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 tf-gradient-text mb-0">Products</h1>
+    <a class="btn btn-tf-primary" asp-controller="Admin" asp-action="ProductCreate">
+        <i class="bi bi-plus-lg me-1"></i>New product
+    </a>
+</div>
+
+<div class="tf-card p-0">
+    <div class="table-responsive">
+        <table class="table tf-table mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Name @(product.IsFeatured ? Html.Raw("<span class='badge tf-badge-featured ms-1'>★</span>") : null)</td>
+                        <td class="text-muted">@product.Brand</td>
+                        <td class="text-muted">@product.CategoryName</td>
+                        <td class="tf-price">@product.Price.ToString("C")</td>
+                        <td>
+                            <span class="badge @(product.StockQuantity <= 5 ? "tf-status-pending" : "tf-badge-stock")">
+                                @product.StockQuantity
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-light btn-sm" asp-controller="Admin" asp-action="ProductEdit" asp-route-id="@product.Id">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-controller="Admin" asp-action="ProductDelete" method="post" class="d-inline"
+                                  onsubmit="return confirm('Delete this product?');">
+                                <input type="hidden" name="id" value="@product.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+@model IReadOnlyList<CategoryDto>
+@{
+    ViewData["Title"] = "Manage Categories";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 tf-gradient-text mb-0">Categories</h1>
+    <a class="btn btn-tf-primary" asp-controller="Admin" asp-action="CategoryCreate">
+        <i class="bi bi-plus-lg me-1"></i>New category
+    </a>
+</div>
+
+<div class="tf-card p-0">
+    <div class="table-responsive">
+        <table class="table tf-table mb-0 align-middle">
+            <thead>
+                <tr><th>Name</th><th>Description</th><th>Products</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td><strong>@category.Name</strong></td>
+                        <td class="text-muted">@category.Description</td>
+                        <td>@category.ProductCount</td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-light btn-sm" asp-controller="Admin" asp-action="CategoryEdit" asp-route-id="@category.Id">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-controller="Admin" asp-action="CategoryDelete" method="post" class="d-inline"
+                                  onsubmit="return confirm('Delete this category?');">
+                                <input type="hidden" name="id" value="@category.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

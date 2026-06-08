@@ -1,0 +1,107 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="h3 tf-gradient-text mb-4">Dashboard</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="tf-card tf-stat p-3">
+            <div class="tf-stat-value" data-count="@Model.ProductCount">@Model.ProductCount</div>
+            <div class="tf-stat-label"><i class="bi bi-box-seam me-1"></i>Products</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="tf-card tf-stat p-3">
+            <div class="tf-stat-value" data-count="@Model.OrderCount">@Model.OrderCount</div>
+            <div class="tf-stat-label"><i class="bi bi-receipt me-1"></i>Orders</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="tf-card tf-stat p-3">
+            <div class="tf-stat-value" data-count="@Model.UserCount">@Model.UserCount</div>
+            <div class="tf-stat-label"><i class="bi bi-people me-1"></i>Users</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="tf-card tf-stat p-3">
+            <div class="tf-stat-value tf-revenue">@Model.TotalRevenue.ToString("C0")</div>
+            <div class="tf-stat-label"><i class="bi bi-cash-stack me-1"></i>Revenue</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="tf-card p-0">
+            <h5 class="p-3 mb-0">Recent orders</h5>
+            @if (Model.RecentOrders.Count == 0)
+            {
+                <p class="text-muted px-3 pb-3 mb-0">No orders yet.</p>
+            }
+            else
+            {
+                <table class="table tf-table mb-0">
+                    <thead><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+                    <tbody>
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <tr>
+                                <td><a asp-controller="Admin" asp-action="Orders">#@order.Id</a></td>
+                                <td class="text-muted">@order.OrderedOn.ToString("MMM d")</td>
+                                <td class="tf-price">@order.TotalPrice.ToString("C")</td>
+                                <td><partial name="_OrderStatusBadge" model="order.Status" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="tf-card p-0">
+            @if (Model.LowStock.Count == 0)
+            {
+                <h5 class="p-3 mb-0"><i class="bi bi-check-circle text-success me-1"></i>Stock status</h5>
+                <p class="text-muted px-3 pb-3 mb-0">All products are well stocked.</p>
+            }
+            else
+            {
+                <h5 class="p-3 mb-0"><i class="bi bi-exclamation-triangle text-warning me-1"></i>Low stock</h5>
+                <table class="table tf-table mb-0">
+                    <tbody>
+                        @foreach (var product in Model.LowStock)
+                        {
+                            <tr>
+                                <td>@product.Name</td>
+                                <td class="text-end">
+                                    <span class="badge @(product.StockQuantity == 0 ? "tf-badge-out" : "tf-status-pending")">
+                                        @product.StockQuantity left
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Animated counters
+        document.querySelectorAll('.tf-stat-value[data-count]').forEach(function (el) {
+            var target = parseInt(el.dataset.count, 10) || 0;
+            var step = Math.max(1, Math.ceil(target / 40)), current = 0;
+            var timer = setInterval(function () {
+                current += step;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = current;
+            }, 25);
+        });
+    </script>
+}

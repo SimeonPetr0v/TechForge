@@ -1,0 +1,16 @@
+@{
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-lg-4 py-4">
+    <div class="row g-4">
+        <aside class="col-lg-2">
+            <partial name="_AdminNav" />
+        </aside>
+        <div class="col-lg-10">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@await RenderSectionAsync("Scripts", required: false)

@@ -27,14 +27,14 @@
                     <li class="nav-item"><a class="nav-link" asp-controller="Builder" asp-action="Index">PC Builder</a></li>
                 </ul>
 
-                <div class="tf-search position-relative mx-lg-3 my-2 my-lg-0 flex-grow-1">
+                <div class="tf-search position-relative mx-lg-3 my-2 my-lg-0">
                     <i class="bi bi-search tf-search-icon"></i>
                     <input id="navSearch" class="form-control form-control-sm tf-search-input" type="search"
                            placeholder="Search products..." autocomplete="off" aria-label="Search" />
                     <div id="searchResults" class="tf-search-results d-none"></div>
                 </div>
 
-                <ul class="navbar-nav align-items-lg-center">
+                <ul class="navbar-nav align-items-lg-center ms-auto">
                     @await Component.InvokeAsync("CartSummary")
                     <partial name="_LoginPartial" />
                 </ul>

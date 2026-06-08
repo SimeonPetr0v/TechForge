@@ -18,6 +18,18 @@ public class ReviewService : IReviewService
         _mapper = mapper;
     }
 
+    public async Task<IReadOnlyList<ReviewDto>> GetAllAsync()
+    {
+        var reviews = await _context.Reviews
+            .Include(r => r.User)
+            .Include(r => r.Product)
+            .OrderByDescending(r => r.CreatedOn)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return _mapper.Map<List<ReviewDto>>(reviews);
+    }
+
     public async Task<IReadOnlyList<ReviewDto>> GetForProductAsync(int productId)
     {
         var reviews = await _context.Reviews
