@@ -1,0 +1,74 @@
+@model OrderDto
+@{
+    ViewData["Title"] = $"Order #{Model.Id}";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+        <h1 class="h3 tf-gradient-text mb-0">Order #@Model.Id</h1>
+        <a class="btn btn-outline-light btn-sm" asp-action="Index">
+            <i class="bi bi-arrow-left me-1"></i>All orders
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="tf-card p-0">
+                <div class="table-responsive">
+                    <table class="table tf-table mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Unit price</th>
+                                <th>Qty</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        <a class="tf-product-name" asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                                            @item.ProductName
+                                        </a>
+                                    </td>
+                                    <td>@item.Price.ToString("C")</td>
+                                    <td>@item.Quantity</td>
+                                    <td class="text-end tf-price">@item.LineTotal.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                <td class="text-end"><strong class="tf-price">@Model.TotalPrice.ToString("C")</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="tf-card p-4">
+                <h6 class="text-uppercase text-muted small mb-3">Order info</h6>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Status</span>
+                    <partial name="_OrderStatusBadge" model="Model.Status" />
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Placed</span>
+                    <span>@Model.OrderedOn.ToString("MMM d, yyyy h:mm tt")</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Items</span>
+                    <span>@Model.ItemCount</span>
+                </div>
+                <hr class="border-secondary" />
+                <h6 class="text-uppercase text-muted small mb-2">Shipping to</h6>
+                <p class="mb-0">@Model.ShippingAddress</p>
+            </div>
+        </div>
+    </div>
+</div>

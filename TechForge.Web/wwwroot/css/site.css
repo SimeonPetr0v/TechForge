@@ -187,6 +187,30 @@ code { color: var(--tf-accent-2); }
 }
 .tf-badge-stock { background: rgba(45,212,191,.15); color: var(--tf-success); }
 
+/* ---- Tables ---- */
+.tf-table {
+    color: var(--tf-text);
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--tf-text);
+}
+.tf-table thead th {
+    color: var(--tf-muted);
+    border-bottom: 1px solid var(--tf-border);
+    font-size: .8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.tf-table td, .tf-table th { border-color: var(--tf-border); padding: .85rem 1rem; }
+.tf-table tbody tr:hover { background: rgba(124,92,255,.06); }
+
+/* ---- Order status badges ---- */
+.tf-status { font-weight: 600; }
+.tf-status-pending { background: rgba(255,194,75,.15); color: #ffc24b; }
+.tf-status-processing { background: rgba(32,227,255,.15); color: var(--tf-accent-2); }
+.tf-status-shipped { background: rgba(124,92,255,.18); color: #b39bff; }
+.tf-status-delivered { background: rgba(45,212,191,.15); color: var(--tf-success); }
+.tf-status-cancelled { background: rgba(255,77,109,.15); color: var(--tf-danger); }
+
 /* ---- Cart ---- */
 .tf-cart-badge {
     background: linear-gradient(90deg, var(--tf-accent), var(--tf-accent-2));

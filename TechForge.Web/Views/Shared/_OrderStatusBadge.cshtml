@@ -1,0 +1,13 @@
+@model string
+@{
+    var cls = Model switch
+    {
+        "Pending" => "tf-status-pending",
+        "Processing" => "tf-status-processing",
+        "Shipped" => "tf-status-shipped",
+        "Delivered" => "tf-status-delivered",
+        "Cancelled" => "tf-status-cancelled",
+        _ => "tf-status-pending"
+    };
+}
+<span class="badge tf-status @cls">@Model</span>

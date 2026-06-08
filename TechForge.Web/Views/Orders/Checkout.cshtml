@@ -1,0 +1,68 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container py-4">
+    <h1 class="h3 tf-gradient-text mb-4">Checkout</h1>
+
+    <form asp-action="Checkout" method="post">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="tf-card p-4">
+                    <h5 class="mb-3">Shipping details</h5>
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="ShippingAddress" class="form-label"></label>
+                        <textarea asp-for="ShippingAddress" class="form-control" rows="3"
+                                  placeholder="Street, city, postal code, country"></textarea>
+                        <span asp-validation-for="ShippingAddress" class="text-danger small"></span>
+                    </div>
+
+                    <h6 class="text-uppercase text-muted small mt-4 mb-2">Payment</h6>
+                    <div class="tf-card p-3" style="background:var(--tf-bg-2);">
+                        <p class="small text-muted mb-0">
+                            <i class="bi bi-info-circle me-1"></i>
+                            This is a demo store — no real payment is processed. Clicking
+                            "Place order" simulates a successful purchase.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="tf-card p-4">
+                    <h5 class="mb-3">Order summary</h5>
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span>@item.ProductName <span class="text-muted">× @item.Quantity</span></span>
+                            <span>@item.LineTotal.ToString("C")</span>
+                        </div>
+                    }
+                    <hr class="border-secondary" />
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal</span>
+                        <span>@Model.Cart.Subtotal.ToString("C")</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Shipping</span>
+                        <span class="text-success">Free</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total</strong>
+                        <strong class="tf-price">@Model.Cart.Subtotal.ToString("C")</strong>
+                    </div>
+                    <button type="submit" class="btn btn-tf-primary w-100">
+                        <i class="bi bi-lock-fill me-2"></i>Place order
+                    </button>
+                    <a class="btn btn-link text-muted w-100 mt-2" asp-controller="Cart" asp-action="Index">Back to cart</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
