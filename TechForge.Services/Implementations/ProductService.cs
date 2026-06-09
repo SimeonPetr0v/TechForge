@@ -27,11 +27,11 @@ public class ProductService : IProductService
 
         if (!string.IsNullOrWhiteSpace(options.SearchTerm))
         {
-            var term = options.SearchTerm.Trim();
+            var term = options.SearchTerm.Trim().ToLower();
             query = query.Where(p =>
-                p.Name.Contains(term) ||
-                p.Brand.Contains(term) ||
-                p.Description.Contains(term));
+                p.Name.ToLower().Contains(term) ||
+                p.Brand.ToLower().Contains(term) ||
+                p.Description.ToLower().Contains(term));
         }
 
         if (options.CategoryId.HasValue)
@@ -139,10 +139,10 @@ public class ProductService : IProductService
             return Array.Empty<ProductDto>();
         }
 
-        var t = term.Trim();
+        var t = term.Trim().ToLower();
         var items = await _context.Products
             .Include(p => p.Category)
-            .Where(p => p.Name.Contains(t) || p.Brand.Contains(t))
+            .Where(p => p.Name.ToLower().Contains(t) || p.Brand.ToLower().Contains(t))
             .OrderByDescending(p => p.Rating)
             .Take(limit)
             .AsNoTracking()

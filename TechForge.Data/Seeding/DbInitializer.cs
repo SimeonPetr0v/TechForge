@@ -16,7 +16,10 @@ public static class DbInitializer
         RoleManager<IdentityRole> roleManager,
         IConfiguration configuration)
     {
-        await context.Database.MigrateAsync();
+        if (context.Database.IsRelational())
+        {
+            await context.Database.MigrateAsync();
+        }
 
         await SeedRolesAsync(roleManager);
         var adminId = await SeedAdminAsync(userManager, configuration);
