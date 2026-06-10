@@ -27,7 +27,6 @@ public class ExceptionHandlingMiddleware
             _logger.LogError(ex, "Unhandled exception while processing {Method} {Path}",
                 context.Request.Method, context.Request.Path);
 
-            // In development, re-throw so the detailed developer page is shown.
             if (_env.IsDevelopment())
             {
                 throw;
